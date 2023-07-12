@@ -34,9 +34,6 @@
   <ItemGroup>
     <Folder Include="Application\Handlers\" />
     <Folder Include="Domain\Language\" />
-    <Folder Include="Infrastructure\Database\CommandStore\Requests\" />
-    <Folder Include="Infrastructure\Database\CommandStore\Responses\" />
-    <Folder Include="Infrastructure\Database\QueryStore\Requests\" />
     <Folder Include="Infrastructure\Database\QueryStore\Responses\" />
   </ItemGroup>
 

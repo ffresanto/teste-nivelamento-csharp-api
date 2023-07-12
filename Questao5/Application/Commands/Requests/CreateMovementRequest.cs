@@ -6,9 +6,9 @@ namespace Questao5.Application.Commands.Requests
 {
     public class CreateMovementRequest : IRequest<CreateMovementResponse>
     {
+        public string IdRequisicao { get; set; }
         public string NumeroConta { get; set; }
         public decimal Valor { get; set; }
-        // public MovementType TipoMovimento { get; set; }
-        public string Description { get; set; }
+        public string TipoMovimento { get; set; }
     }
 }
