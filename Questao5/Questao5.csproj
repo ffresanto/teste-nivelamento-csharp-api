@@ -34,7 +34,6 @@
   <ItemGroup>
     <Folder Include="Application\Handlers\" />
     <Folder Include="Domain\Language\" />
-    <Folder Include="Infrastructure\Database\QueryStore\Responses\" />
   </ItemGroup>
 
 </Project>

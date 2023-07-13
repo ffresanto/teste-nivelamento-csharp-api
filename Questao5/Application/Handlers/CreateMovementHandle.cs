@@ -3,8 +3,11 @@ using MediatR;
 using Microsoft.Data.Sqlite;
 using Questao5.Application.Commands.Requests;
 using Questao5.Application.Commands.Responses;
+using Questao5.Application.Constants;
 using Questao5.Domain.Entities;
+using Questao5.Domain.Enumerators;
 using Questao5.Infrastructure.Database.CommandStore.Requests;
+using Questao5.Infrastructure.Database.QueryStore.Requests;
 
 namespace Questao5.Application.Handlers
 {
@@ -18,10 +21,14 @@ namespace Questao5.Application.Handlers
         public async Task<CreateMovementResponse> Handle(CreateMovementRequest request, CancellationToken cancellationToken)
         {
             // Valida o idempotencia
+            var IdempotenciaData = await _mediator.Send(new GetIdempotenciaQueryRequest { IdRequisicao = request.IdRequisicao });
+            
+            if (IdempotenciaData != null && IdempotenciaData.Resultado == ConstantsIdempotencia.Error) 
+                return await Task.FromResult(new CreateMovementResponse{ IdMovimento = "0", Description = IdempotenciaData.Resultado });
 
-            // se existir retorna o idempotencia resultado.
-
-            // Se nao existir valida request.
+            // Inseri Registro de idempotencia em andamento
+            if (IdempotenciaData != null && IdempotenciaData.Resultado != ConstantsIdempotencia.InProgress)
+                await _mediator.Send(new CreateIdempotenciaCommandRequest { IdRequisicao = request.IdRequisicao, Requisicao = "Movement", Resultado = ConstantsIdempotencia.InProgress });
 
             var commandRequest = new CreateMovementCommandRequest
             {
@@ -31,6 +38,9 @@ namespace Questao5.Application.Handlers
             };
 
             var responseCommand = await _mediator.Send(commandRequest);
+
+            // Atualiza Registro de idempotencia Concluido
+            await _mediator.Send(new UpdateIdempotenciaCommandRequest { IdRequisicao = request.IdRequisicao, Resultado = ConstantsIdempotencia.Concluded });
 
             var response = new CreateMovementResponse
             {

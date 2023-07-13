@@ -4,7 +4,7 @@ using Microsoft.Data.Sqlite;
 using Questao5.Infrastructure.Database.CommandStore.Requests;
 using Questao5.Infrastructure.Database.CommandStore.Responses;
 
-namespace Questao5.Infrastructure.Database.CommandStore
+namespace Questao5.Infrastructure.Database.CommandStore.Handlers
 {
     public class CreateMovementCommandHandler : IRequestHandler<CreateMovementCommandRequest, CreateMovementCommandResponse>
     {
