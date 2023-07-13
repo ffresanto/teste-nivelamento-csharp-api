@@ -2,7 +2,7 @@
 {
     public class ContaCorrente
     {
-        public string IdContaCorrent { get; set; }
+        public string IdContaCorrente { get; set; }
         public int Numero { get; set; }
         public string Nome { get; set; }
         public bool Ativo { get; set; }

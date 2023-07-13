@@ -20,6 +20,8 @@ namespace Questao5.Application.Handlers
         }
         public async Task<CreateMovementResponse> Handle(CreateMovementRequest request, CancellationToken cancellationToken)
         {
+            var accountData = await _mediator.Send(new GetIdAccountFindByNumberQueryRequest { Numero = request.NumeroConta });
+
             // Valida o idempotencia
             var IdempotenciaData = await _mediator.Send(new GetIdempotenciaQueryRequest { IdRequisicao = request.IdRequisicao });
             
