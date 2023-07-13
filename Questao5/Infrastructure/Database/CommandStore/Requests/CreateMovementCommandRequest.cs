@@ -13,7 +13,7 @@ namespace Questao5.Infrastructure.Database.CommandStore.Requests
         public CreateMovementCommandRequest()
         {
             Guid uuid = Guid.NewGuid();
-            IdMovimento = uuid.ToString();
+            IdMovimento = uuid.ToString().ToUpper();
             DataMovimento = DateTime.Now;
         }
     }

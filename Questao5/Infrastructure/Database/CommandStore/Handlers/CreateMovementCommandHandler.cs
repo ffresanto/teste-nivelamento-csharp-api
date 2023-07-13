@@ -17,8 +17,8 @@ namespace Questao5.Infrastructure.Database.CommandStore.Handlers
 
         async Task<CreateMovementCommandResponse> IRequestHandler<CreateMovementCommandRequest, CreateMovementCommandResponse>.Handle(CreateMovementCommandRequest request, CancellationToken cancellationToken)
         {
-            var sql = "INSERT INTO movimento (idcontacorrente, datamovimento, tipomovimento, valor) " +
-            "VALUES (@IdContaCorrente, @DataMovimento, @TipoMovimento, @Valor)";
+            var sql = "INSERT INTO movimento (idcontacorrente, idmovimento, datamovimento, tipomovimento, valor) " +
+            "VALUES (@IdContaCorrente, @IdMovimento, @DataMovimento, @TipoMovimento, @Valor)";
 
             await _connection.ExecuteAsync(sql, request);
 

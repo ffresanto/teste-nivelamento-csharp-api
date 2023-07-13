@@ -20,6 +20,7 @@ namespace Questao5.Application.Handlers
         }
         public async Task<CreateMovementResponse> Handle(CreateMovementRequest request, CancellationToken cancellationToken)
         {
+            // Retorna dados da conta bancaria pelo numero da conta ou uuid da conta
             var accountData = await _mediator.Send(new GetIdAccountFindByNumberQueryRequest { Numero = request.NumeroConta });
 
             // Valida o idempotencia
@@ -29,12 +30,12 @@ namespace Questao5.Application.Handlers
                 return await Task.FromResult(new CreateMovementResponse{ IdMovimento = "0", Description = IdempotenciaData.Resultado });
 
             // Inseri Registro de idempotencia em andamento
-            if (IdempotenciaData != null && IdempotenciaData.Resultado != ConstantsIdempotencia.InProgress)
+            if (IdempotenciaData == null || IdempotenciaData.Resultado != ConstantsIdempotencia.InProgress || IdempotenciaData.Resultado != ConstantsIdempotencia.Error)
                 await _mediator.Send(new CreateIdempotenciaCommandRequest { IdRequisicao = request.IdRequisicao, Requisicao = "Movement", Resultado = ConstantsIdempotencia.InProgress });
 
             var commandRequest = new CreateMovementCommandRequest
             {
-                IdContaCorrente = request.NumeroConta,
+                IdContaCorrente = accountData.IdContaCorrente,
                 TipoMovimento = request.TipoMovimento,
                 Valor = request.Valor
             };
