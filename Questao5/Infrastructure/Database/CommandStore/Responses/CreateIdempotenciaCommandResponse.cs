@@ -1,4 +1,6 @@
-﻿namespace Questao5.Infrastructure.Database.CommandStore.Responses
+﻿using Questao5.Domain.Enumerators;
+
+namespace Questao5.Infrastructure.Database.CommandStore.Responses
 {
     public class CreateIdempotenciaCommandResponse
     {

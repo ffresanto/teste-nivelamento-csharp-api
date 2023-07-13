@@ -1,6 +1,6 @@
 ﻿namespace Questao5.Application.Constants
 {
-    public class ConstantsIdempotencia
+    public static class ConstantsIdempotencia
     {
         public const string InProgress = "IN_PROGRESS";
         public const string Error = "ERROR";

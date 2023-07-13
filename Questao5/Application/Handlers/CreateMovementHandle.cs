@@ -20,6 +20,8 @@ namespace Questao5.Application.Handlers
         }
         public async Task<CreateMovementResponse> Handle(CreateMovementRequest request, CancellationToken cancellationToken)
         {
+            try
+            {
             // Retorna dados da conta bancaria pelo numero da conta ou uuid da conta
             var accountData = await _mediator.Send(new GetIdAccountFindByNumberQueryRequest { Numero = request.NumeroConta });
 
@@ -31,7 +33,7 @@ namespace Questao5.Application.Handlers
 
             // Inseri Registro de idempotencia em andamento
             if (IdempotenciaData == null || IdempotenciaData.Resultado != ConstantsIdempotencia.InProgress || IdempotenciaData.Resultado != ConstantsIdempotencia.Error)
-                await _mediator.Send(new CreateIdempotenciaCommandRequest { IdRequisicao = request.IdRequisicao, Requisicao = "Movement", Resultado = ConstantsIdempotencia.InProgress });
+                await _mediator.Send(new CreateIdempotenciaCommandRequest { IdRequisicao = request.IdRequisicao, Requisicao = "Movement", Resultado = IdempotenciaResultType.IN_PROGRESS.ToString() });
 
             var commandRequest = new CreateMovementCommandRequest
             {
@@ -43,15 +45,33 @@ namespace Questao5.Application.Handlers
             var responseCommand = await _mediator.Send(commandRequest);
 
             // Atualiza Registro de idempotencia Concluido
-            await _mediator.Send(new UpdateIdempotenciaCommandRequest { IdRequisicao = request.IdRequisicao, Resultado = ConstantsIdempotencia.Concluded });
+            await _mediator.Send(new UpdateIdempotenciaCommandRequest { IdRequisicao = request.IdRequisicao, Resultado = IdempotenciaResultType.CONCLUDED.ToString() });
 
             var response = new CreateMovementResponse
             {
                 IdMovimento = commandRequest.IdMovimento,
-                Description = responseCommand.Description
+                Description = responseCommand.Description,
+                Result = 200
             };
 
             return await Task.FromResult(response);
+
+            }
+            catch (Exception e)
+            {
+                await _mediator.Send(new UpdateIdempotenciaCommandRequest { IdRequisicao = request.IdRequisicao, Resultado = IdempotenciaResultType.ERROR.ToString() });
+
+                var response = new CreateMovementResponse
+                {
+                    IdMovimento = null,
+                    Description = e.Message,
+                    Result = 400
+                };
+
+                return await Task.FromResult(response);
+            }
         }
+
     }
+
 }

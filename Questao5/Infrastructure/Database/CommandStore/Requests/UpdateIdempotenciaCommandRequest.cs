@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Questao5.Domain.Enumerators;
 using Questao5.Infrastructure.Database.CommandStore.Responses;
 
 namespace Questao5.Infrastructure.Database.CommandStore.Requests

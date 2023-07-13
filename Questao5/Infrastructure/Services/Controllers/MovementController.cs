@@ -11,10 +11,16 @@ namespace Questao5.Infrastructure.Services.Controllers
     {
         [HttpPost]
         [Route("")]
-        public Task<CreateMovementResponse> Create([FromServices]IMediator mediator, [FromBody]CreateMovementRequest command)
+        public async Task<IActionResult> Create([FromServices]IMediator mediator, [FromBody]CreateMovementRequest command)
         {
-            var response = mediator.Send(command);
-            return response;
+            var response = await mediator.Send(command);
+
+            if (response.Result == 400)
+            {
+               return BadRequest(response);
+            }
+
+            return Ok(response);
         }
     }
 }
