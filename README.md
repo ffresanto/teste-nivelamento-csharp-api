@@ -45,5 +45,28 @@ Siga as etapas abaixo para baixar e executar o projeto em sua máquina:
 
 <img src="https://github.com/ffresanto/teste-nivelamento-csharp-api/assets/44379238/a5029cf3-7258-48a7-b550-fa0ad551243d" width="520">
 
+## 📋 Questão 3
 
+A questão 3 era apenas para realizar a sequência de comandos de GIT e ver o resultado final que ficara na pasta, no meu caso o resultado foi a reposta abaixo:
 
+```
+[ ] script.js e style.css, apenas.
+[ ] default.html e style.css, apenas.
+[x] style.css, apenas.
+[ ] default.html e script.js, apenas.
+[ ] default.html, script.js e style.css.
+ ```
+
+## 📋 Questão 4
+
+A questão 4 era apenas para montar a query correspondente a pergunta que está no documento da pasta da Questão 4.
+
+```
+SELECT at.assunto, at.ano, COUNT(*) quantidade 
+  FROM atendimentos at
+GROUP BY at.assunto, at.ano
+HAVING COUNT(*) > 3
+ORDER BY at.ano, COUNT(*) DESC;
+```
+
+## 📋 Questão 5
