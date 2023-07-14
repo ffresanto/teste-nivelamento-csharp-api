@@ -8,7 +8,7 @@ namespace Questao5.Application.Services
     {
         public void ValidateAccount(GetIdAccountFindByNumberQueryResponse accountData)
         {
-            if (accountData == null)
+            if (accountData == null || accountData.IdContaCorrente == null)
                 throw new Exception(ErrorType.INVALID_ACCOUNT.ToString());
 
             if (accountData.Ativo == "0")
