@@ -27,8 +27,17 @@ namespace Questao5.Application.Handlers
         {
             try
             {
-                var idempotenciaData = await ObterIdempotenciaData(request.IdRequest);
-                var accountData = await ObterAccountData(request.AccountNumber);
+                
+
+                var idempotenciaData = await GetIdempotenciaData(request.IdRequest);
+
+                if (idempotenciaData == null)
+                    CreateIdempotencia(request.IdRequest, IdempotenciaResultType.IN_PROGRESS.ToString(), nameof(CreateMovementRequest));
+
+                if (idempotenciaData != null && idempotenciaData.Resultado == IdempotenciaResultType.CONCLUDED.ToString())
+                    return CreateResponse(idempotenciaData.Resultado, ConstantsResponse.RequestAlreadyMade, 400);
+
+                var accountData = await GetAccountData(request.AccountNumber);
 
                 _accountService.ValidateAccount(accountData);
                 _accountService.ValidateValue(request.Value);
@@ -36,8 +45,6 @@ namespace Questao5.Application.Handlers
 
                 if (idempotenciaData != null && idempotenciaData.Resultado == IdempotenciaResultType.ERROR.ToString())
                     return CreateResponse(idempotenciaData.Resultado, ConstantsResponse.RequestAlreadyMade, 400);
-
-                await UpdateIdempotencia(request.IdRequest, IdempotenciaResultType.IN_PROGRESS.ToString());
 
                 var commandRequest = new CreateMovementCommandRequest
                 {
@@ -47,6 +54,7 @@ namespace Questao5.Application.Handlers
                 };
 
                 var responseCommand = await CreateMovement(commandRequest);
+
                 await UpdateIdempotencia(request.IdRequest, IdempotenciaResultType.CONCLUDED.ToString());
 
                 var response = CreateResponse(responseCommand.Description, commandRequest.IdMovimento, 200);
@@ -63,12 +71,17 @@ namespace Questao5.Application.Handlers
             }
         }
 
-        private async Task<GetIdempotenciaQueryResponse> ObterIdempotenciaData(string idRequest)
+        private async Task<CreateIdempotenciaCommandResponse> CreateIdempotencia(string idRequest, string result, string Requisicao)
+        {
+            return await _mediator.Send(new CreateIdempotenciaCommandRequest { IdRequisicao = idRequest, Resultado = result, Requisicao = Requisicao });
+        }
+
+        private async Task<GetIdempotenciaQueryResponse> GetIdempotenciaData(string idRequest)
         {
             return await _mediator.Send(new GetIdempotenciaQueryRequest { IdRequisicao = idRequest });
         }
 
-        private async Task<GetIdAccountFindByNumberQueryResponse> ObterAccountData(string accountNumber)
+        private async Task<GetIdAccountFindByNumberQueryResponse> GetAccountData(string accountNumber)
         {
             return await _mediator.Send(new GetIdAccountFindByNumberQueryRequest { Numero = accountNumber });
         }
