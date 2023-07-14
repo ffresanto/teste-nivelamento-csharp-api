@@ -14,7 +14,7 @@ namespace Questao5.Infrastructure.Database.QueryStore.Handlers
             _connection = connection;
         }
 
-        async public Task<GetIdempotenciaQueryResponse> Handle(GetIdempotenciaQueryRequest request, CancellationToken cancellationToken)
+        public async Task<GetIdempotenciaQueryResponse> Handle(GetIdempotenciaQueryRequest request, CancellationToken cancellationToken)
         {
             var sql = "SELECT chave_idempotencia, requisicao, resultado FROM idempotencia WHERE chave_idempotencia = @IdRequisicao";
 

@@ -13,10 +13,10 @@ using Questao5.Infrastructure.Database.QueryStore.Responses;
 
 namespace Questao5.Application.Handlers
 {
-    public class CreateMovementHandle : IRequestHandler<CreateMovementRequest, CreateMovementResponse>
+    public class CreateMovementHandler : IRequestHandler<CreateMovementRequest, CreateMovementResponse>
     {
         private readonly IMediator _mediator;
-        public CreateMovementHandle(IMediator mediator)
+        public CreateMovementHandler(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -70,25 +70,25 @@ namespace Questao5.Application.Handlers
             return await _mediator.Send(new GetIdAccountFindByNumberQueryRequest { Numero = accountNumber });
         }
 
-        private void ValidateAccount(GetIdAccountFindByNumberQueryResponse accountData)
+        public void ValidateAccount(GetIdAccountFindByNumberQueryResponse accountData)
         {
             if (accountData == null)
-                throw new Exception(MovementErrorType.INVALID_ACCOUNT.ToString());
+                throw new Exception(ErrorType.INVALID_ACCOUNT.ToString());
 
             if (accountData.Ativo == "0")
-                throw new Exception(MovementErrorType.INACTIVE_ACCOUNT.ToString());
+                throw new Exception(ErrorType.INACTIVE_ACCOUNT.ToString());
         }
 
         private void ValidateValue(decimal value)
         {
             if (value <= 0)
-                throw new Exception(MovementErrorType.INVALID_VALUE.ToString());
+                throw new Exception(ErrorType.INVALID_VALUE.ToString());
         }
 
         private void ValidateTypeMovement(string typeMovement)
         {
             if (typeMovement.ToUpper() != "C" && typeMovement.ToUpper() != "D")
-                throw new Exception(MovementErrorType.INVALID_TYPE.ToString());
+                throw new Exception(ErrorType.INVALID_TYPE.ToString());
         }
 
         private async Task UpdateIdempotencia(string idRequest, string result)

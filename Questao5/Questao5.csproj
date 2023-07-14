@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Application\Queries\Requests\GetAllMovementRequest.cs" />
+    <Compile Remove="Application\Queries\Responses\GetAllMovementResponse.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Application\Handlers\NewFile.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
 	<PackageReference Include="Dapper" Version="2.0.35" />
 	<PackageReference Include="Microsoft.Data.Sqlite" Version="3.1.6" />
@@ -32,7 +41,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Handlers\" />
     <Folder Include="Domain\Language\" />
   </ItemGroup>
 

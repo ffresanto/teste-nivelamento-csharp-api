@@ -1,6 +1,6 @@
 ﻿namespace Questao5.Domain.Enumerators
 {
-    public enum MovementErrorType
+    public enum ErrorType
     {
         INVALID_ACCOUNT,
         INACTIVE_ACCOUNT,

@@ -14,7 +14,7 @@ namespace Questao5.Infrastructure.Database.QueryStore.Handlers
             _connection = connection;
         }
 
-        async public Task<GetIdAccountFindByNumberQueryResponse> Handle(GetIdAccountFindByNumberQueryRequest request, CancellationToken cancellationToken)
+        public async Task<GetIdAccountFindByNumberQueryResponse> Handle(GetIdAccountFindByNumberQueryRequest request, CancellationToken cancellationToken)
         {
             var sql = "SELECT idcontacorrente, numero,  nome, ativo FROM contacorrente WHERE numero = @Numero OR idcontacorrente = @Numero";
 
