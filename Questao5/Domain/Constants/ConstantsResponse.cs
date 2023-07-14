@@ -1,4 +1,4 @@
-﻿namespace Questao5.Application.Constants
+﻿namespace Questao5.Domain.Constants
 {
     public static class ConstantsResponse
     {

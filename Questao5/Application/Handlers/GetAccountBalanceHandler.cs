@@ -2,6 +2,7 @@
 using Questao5.Application.Queries.Requests;
 using Questao5.Application.Queries.Responses;
 using Questao5.Domain.Enumerators;
+using Questao5.Domain.Services;
 using Questao5.Infrastructure.Database.QueryStore.Requests;
 using Questao5.Infrastructure.Database.QueryStore.Responses;
 
@@ -10,9 +11,12 @@ namespace Questao5.Application.Handlers
     public class GetAccountBalanceHandler : IRequestHandler<GetAccountBalanceRequest, GetAccountBalanceResponse>
     {
         private readonly IMediator _mediator;
-        public GetAccountBalanceHandler(IMediator mediator)
+        private readonly IAccountService _accountValidator;
+
+        public GetAccountBalanceHandler(IMediator mediator, IAccountService accountValidator)
         {
             _mediator = mediator;
+            _accountValidator = accountValidator;
         }
 
         public async Task<GetAccountBalanceResponse> Handle(GetAccountBalanceRequest request, CancellationToken cancellationToken)
@@ -21,7 +25,7 @@ namespace Questao5.Application.Handlers
             {
                 var accountData = await GetAccountData(request.AccountNumber);
 
-                ValidateAccount(accountData);
+                _accountValidator.ValidateAccount(accountData);
 
                 var accountBalance = await GetAccountBalance(accountData.IdContaCorrente);
 
@@ -37,14 +41,6 @@ namespace Questao5.Application.Handlers
                 return await Task.FromResult(response);
             }
 
-        }
-        public void ValidateAccount(GetIdAccountFindByNumberQueryResponse accountData)
-        {
-            if (accountData == null)
-                throw new Exception(ErrorType.INVALID_ACCOUNT.ToString());
-
-            if (accountData.Ativo == "0")
-                throw new Exception(ErrorType.INACTIVE_ACCOUNT.ToString());
         }
         private GetAccountBalanceResponse CreateResponse(string description, int result, GetAccountBalanceResponse? response = null)
         {

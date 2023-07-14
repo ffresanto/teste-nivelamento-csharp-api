@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using MediatR;
 using Microsoft.Data.Sqlite;
-using Questao5.Application.Constants;
+using Questao5.Domain.Constants;
 using Questao5.Infrastructure.Database.CommandStore.Requests;
 using Questao5.Infrastructure.Database.CommandStore.Responses;
 

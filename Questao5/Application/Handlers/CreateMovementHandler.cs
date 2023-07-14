@@ -3,9 +3,10 @@ using MediatR;
 using Microsoft.Data.Sqlite;
 using Questao5.Application.Commands.Requests;
 using Questao5.Application.Commands.Responses;
-using Questao5.Application.Constants;
+using Questao5.Domain.Constants;
 using Questao5.Domain.Entities;
 using Questao5.Domain.Enumerators;
+using Questao5.Domain.Services;
 using Questao5.Infrastructure.Database.CommandStore.Requests;
 using Questao5.Infrastructure.Database.CommandStore.Responses;
 using Questao5.Infrastructure.Database.QueryStore.Requests;
@@ -16,9 +17,11 @@ namespace Questao5.Application.Handlers
     public class CreateMovementHandler : IRequestHandler<CreateMovementRequest, CreateMovementResponse>
     {
         private readonly IMediator _mediator;
-        public CreateMovementHandler(IMediator mediator)
+        private readonly IAccountService _accountService;
+        public CreateMovementHandler(IMediator mediator, IAccountService accountService)
         {
             _mediator = mediator;
+            _accountService = accountService;
         }
         public async Task<CreateMovementResponse> Handle(CreateMovementRequest request, CancellationToken cancellationToken)
         {
@@ -27,8 +30,8 @@ namespace Questao5.Application.Handlers
                 var idempotenciaData = await ObterIdempotenciaData(request.IdRequisicao);
                 var accountData = await ObterAccountData(request.NumeroConta);
 
-                ValidateAccount(accountData);
-                ValidateValue(request.Valor);
+                _accountService.ValidateAccount(accountData);
+                _accountService.ValidateValue(request.Valor);
                 ValidateTypeMovement(request.TipoMovimento);
 
                 if (idempotenciaData != null && idempotenciaData.Resultado == IdempotenciaResultType.ERROR.ToString())
@@ -68,21 +71,6 @@ namespace Questao5.Application.Handlers
         private async Task<GetIdAccountFindByNumberQueryResponse> ObterAccountData(string accountNumber)
         {
             return await _mediator.Send(new GetIdAccountFindByNumberQueryRequest { Numero = accountNumber });
-        }
-
-        public void ValidateAccount(GetIdAccountFindByNumberQueryResponse accountData)
-        {
-            if (accountData == null)
-                throw new Exception(ErrorType.INVALID_ACCOUNT.ToString());
-
-            if (accountData.Ativo == "0")
-                throw new Exception(ErrorType.INACTIVE_ACCOUNT.ToString());
-        }
-
-        private void ValidateValue(decimal value)
-        {
-            if (value <= 0)
-                throw new Exception(ErrorType.INVALID_VALUE.ToString());
         }
 
         private void ValidateTypeMovement(string typeMovement)

@@ -1,5 +1,7 @@
 using MediatR;
 using Microsoft.Data.Sqlite;
+using Questao5.Application.Services;
+using Questao5.Domain.Services;
 using Questao5.Infrastructure.Sqlite;
 using System.Reflection;
 
@@ -18,7 +20,9 @@ builder.Services.AddSingleton<SqliteConnection>(_ =>
     var connectionString = "Data Source=database.sqlite";
     return new SqliteConnection(connectionString);
 });
+// Registro da implementação da interface no contêiner
 
+builder.Services.AddTransient<IAccountService, AccountService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
