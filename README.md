@@ -70,3 +70,51 @@ ORDER BY at.ano, COUNT(*) DESC;
 ```
 
 ## 📋 Questão 5
+
+A questão 5 envolve a criação de uma API com dois serviços básicos, utilizando boas práticas de codificação, CQRS com Mediator, Dapper, Testes unitários e Swagger. Mesmo que seja apenas dois serviços básicos, gostei bastante desse exercício, pois me permitiu aprender mais sobre o NSubstitute nos testes unitario e CQRS com Mediator, além de aprender novas práticas de desenvolvimento.
+
+## 🔴 Endpoints
+
+### Criar uma movimentação
+
+- **URL**
+  `/api/movement`
+  
+Path | Method | Description
+---|---|---
+/api/movement/| POST | Movement
+
+- **Corpo da Requisição**
+
+ O corpo da requisição deve ser um objeto JSON com as seguintes propriedades:
+
+  ```json
+  {
+    "idRequest": "string",
+    "accountNumber": "string",
+    "value": number,
+    "typeMovement": "string"
+  }
+  ```
+ Properties | Type | Description
+---|---|---
+idRequest| string | UUID da requisição, para teste usar o site para gerar o [UUID](https://www.uuidtools.com/v4)
+
+ Resposta da requisição:
+  ```json
+  {
+    "description": "string",
+    "result": number
+  }
+  ```
+
+### Obter saldo da conta
+
+Retorna o saldo da conta com base no número da conta.
+
+- **URL**
+  `/api/accountbalance/{accountNumber}`
+  
+Path | Method | Description
+---|---|---
+api/accountbalance/{accountNumber}| GET | AccountBalance
