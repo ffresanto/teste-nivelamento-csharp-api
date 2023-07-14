@@ -8,9 +8,9 @@ Agradeço antecipadamente pela atenção e a oportunidade de demonstrar meus con
 
 ## :computer: Sobre o projeto
 
-Este é um projeto em .NET 6, portanto, certifique-se de ter o SDK correspondente instalado em sua máquina antes de prosseguir.
+Este é um projeto em .NET 6, portanto, certifique-se de ter o SDK e os recursos utilizados correspondente instalado em sua máquina antes de prosseguir.
 
-## Recursos utilizados
+### Recursos utilizados
 
 Antes de começar, verifique se sua máquina atende aos seguintes recursos utilizados:
 
@@ -30,10 +30,20 @@ Siga as etapas abaixo para baixar e executar o projeto em sua máquina:
 2. Navegue até o diretório do projeto
 
 3. Abra a solution __Exercicio.sln__
+   
+4. Escolha qual projeto da questão que será analisada, conforme exemplo abaixo.
 
-4. Faça um build no projeto para verificar se contém erro.
+![startproject](https://github.com/ffresanto/teste-nivelamento-csharp-api/assets/44379238/98dfad4f-368c-4d5b-8efb-9b80a2440e74)
+
+5. Faça o build no projeto e depois só executar.
 
 ## 📋 Questão 1
 
 <img src="https://github.com/ffresanto/teste-nivelamento-csharp-api/assets/44379238/a279cec6-d548-43b1-8c80-7f1cb87639ae" width="520">
+
+## 📋 Questão 2
+
+<img src="https://github.com/ffresanto/teste-nivelamento-csharp-api/assets/44379238/a5029cf3-7258-48a7-b550-fa0ad551243d" width="520">
+
+
 
