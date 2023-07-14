@@ -26,15 +26,16 @@ namespace Questao5.Application.Handlers
         public async Task<CreateMovementResponse> Handle(CreateMovementRequest request, CancellationToken cancellationToken)
         {
             try
-            {
-                
-
+            {  
                 var idempotenciaData = await GetIdempotenciaData(request.IdRequest);
 
                 if (idempotenciaData == null)
-                    CreateIdempotencia(request.IdRequest, IdempotenciaResultType.IN_PROGRESS.ToString(), nameof(CreateMovementRequest));
+                    await CreateIdempotencia(request.IdRequest, IdempotenciaResultType.IN_PROGRESS.ToString(), nameof(CreateMovementRequest));
 
                 if (idempotenciaData != null && idempotenciaData.Resultado == IdempotenciaResultType.CONCLUDED.ToString())
+                    return CreateResponse(idempotenciaData.Resultado, ConstantsResponse.RequestAlreadyMade, 400);
+
+                if (idempotenciaData != null && idempotenciaData.Resultado == IdempotenciaResultType.ERROR.ToString())
                     return CreateResponse(idempotenciaData.Resultado, ConstantsResponse.RequestAlreadyMade, 400);
 
                 var accountData = await GetAccountData(request.AccountNumber);
@@ -42,9 +43,6 @@ namespace Questao5.Application.Handlers
                 _accountService.ValidateAccount(accountData);
                 _accountService.ValidateValue(request.Value);
                 ValidateTypeMovement(request.TypeMovement);
-
-                if (idempotenciaData != null && idempotenciaData.Resultado == IdempotenciaResultType.ERROR.ToString())
-                    return CreateResponse(idempotenciaData.Resultado, ConstantsResponse.RequestAlreadyMade, 400);
 
                 var commandRequest = new CreateMovementCommandRequest
                 {
