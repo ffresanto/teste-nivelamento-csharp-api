@@ -80,7 +80,7 @@ A questão 5 envolve a criação de uma API com dois serviços básicos, utiliza
 - **URL**
   `/api/movement`
   
-Path | Method | Description
+Endereço | Método | Descrição
 ---|---|---
 /api/movement/| POST | Movement
 
@@ -96,7 +96,7 @@ Path | Method | Description
     "typeMovement": "string"
   }
   ```
- Properties | Type | Description
+ Parâmetro | Tipo | Descrição
 ---|---|---
 idRequest| string | UUID da requisição, para teste usar o site para gerar o [UUID](https://www.uuidtools.com/v4)
 accountNumber | string | Pode ser o UUID do idcontacorrente ou apenas o número da conta gravados no sqlite
@@ -118,6 +118,31 @@ Retorna o saldo da conta com base no número da conta.
 - **URL**
   `/api/accountbalance/{accountNumber}`
   
-Path | Method | Description
+Endereço | Método | Descrição
 ---|---|---
 api/accountbalance/{accountNumber}| GET | AccountBalance
+
+- **Parâmetros de URL**
+
+| Parâmetro       | Tipo   | Descrição                    |
+|-----------------|--------|------------------------------|
+| `accountNumber` | string | Número da conta, Pode ser o UUID do idcontacorrente ou apenas o número da conta gravados no sqlite |
+
+
+ Resposta da requisição - Status 200:
+  ```json
+  {
+   "accountNumber": number,
+   "accountHolder": "string",
+   "consultationDate": "string",
+   "balanceValue": number
+  }
+  ```
+
+ Resposta da requisição - Status 400 Bad Request:
+  ```json
+  {
+    "description": "string",
+    "result": number
+  }
+  ```
