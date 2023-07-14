@@ -99,6 +99,9 @@ Path | Method | Description
  Properties | Type | Description
 ---|---|---
 idRequest| string | UUID da requisição, para teste usar o site para gerar o [UUID](https://www.uuidtools.com/v4)
+accountNumber | string | Pode ser o UUID do idcontacorrente ou apenas o número da conta gravados no sqlite
+value | number | Valor da movimentação
+typeMovement | string | Tipo de movimentação, aceitando apenas valores "D" ou "C" (Debito ou Credito)
 
  Resposta da requisição:
   ```json
