@@ -27,27 +27,27 @@ namespace Questao5.Application.Handlers
         {
             try
             {
-                var idempotenciaData = await ObterIdempotenciaData(request.IdRequisicao);
-                var accountData = await ObterAccountData(request.NumeroConta);
+                var idempotenciaData = await ObterIdempotenciaData(request.IdRequest);
+                var accountData = await ObterAccountData(request.AccountNumber);
 
                 _accountService.ValidateAccount(accountData);
-                _accountService.ValidateValue(request.Valor);
-                ValidateTypeMovement(request.TipoMovimento);
+                _accountService.ValidateValue(request.Value);
+                ValidateTypeMovement(request.TypeMovement);
 
                 if (idempotenciaData != null && idempotenciaData.Resultado == IdempotenciaResultType.ERROR.ToString())
                     return CreateResponse(idempotenciaData.Resultado, ConstantsResponse.RequestAlreadyMade, 400);
 
-                await UpdateIdempotencia(request.IdRequisicao, IdempotenciaResultType.IN_PROGRESS.ToString());
+                await UpdateIdempotencia(request.IdRequest, IdempotenciaResultType.IN_PROGRESS.ToString());
 
                 var commandRequest = new CreateMovementCommandRequest
                 {
                     IdContaCorrente = accountData.IdContaCorrente,
-                    TipoMovimento = request.TipoMovimento.ToUpper(),
-                    Valor = request.Valor
+                    TipoMovimento = request.TypeMovement.ToUpper(),
+                    Valor = request.Value
                 };
 
                 var responseCommand = await CreateMovement(commandRequest);
-                await UpdateIdempotencia(request.IdRequisicao, IdempotenciaResultType.CONCLUDED.ToString());
+                await UpdateIdempotencia(request.IdRequest, IdempotenciaResultType.CONCLUDED.ToString());
 
                 var response = CreateResponse(responseCommand.Description, commandRequest.IdMovimento, 200);
 
@@ -55,7 +55,7 @@ namespace Questao5.Application.Handlers
             }
             catch (Exception e)
             {
-                await UpdateIdempotencia(request.IdRequisicao, IdempotenciaResultType.ERROR.ToString());
+                await UpdateIdempotencia(request.IdRequest, IdempotenciaResultType.ERROR.ToString());
 
                 var response = CreateResponse(e.Message, null, 400);
 

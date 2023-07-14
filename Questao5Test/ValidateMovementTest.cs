@@ -43,7 +43,7 @@ namespace Questao5Test
                 Numero = 121
             });
 
-            var result = await _createMovementHandler.Handle(new () {NumeroConta = "001", IdRequisicao = idRequestTest, TipoMovimento = "Ab", Valor = 100 }, new CancellationToken() { });
+            var result = await _createMovementHandler.Handle(new () {AccountNumber = "001", IdRequest = idRequestTest, TypeMovement = "Ab", Value = 100 }, new CancellationToken() { });
             var expectResult = new CreateMovementResponse() { Description = ErrorType.INVALID_TYPE.ToString(), IdMovimento = null, Result = 400 };
             Assert.Equal(expectResult.Description, result.Description);
 

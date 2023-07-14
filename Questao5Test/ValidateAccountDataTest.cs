@@ -43,7 +43,7 @@ namespace Questao5Test
                 Numero = 121
             });
 
-            var result = await _createMovementHandler.Handle(new () {NumeroConta = "001", IdRequisicao = idRequestTest, TipoMovimento = "C", Valor = 0 }, new CancellationToken() { });
+            var result = await _createMovementHandler.Handle(new () {AccountNumber = "001", IdRequest = idRequestTest, TypeMovement = "C", Value = 0 }, new CancellationToken() { });
             var expectResult = new CreateMovementResponse() { Description = ErrorType.INVALID_VALUE.ToString(), IdMovimento = null, Result = 400 };
             Assert.Equal(expectResult.Description, result.Description);
 
@@ -73,7 +73,7 @@ namespace Questao5Test
                 Numero = 0
             });
 
-            var result = await _createMovementHandler.Handle(new() { NumeroConta = IdContaCorrentTest, IdRequisicao = idRequestTest, TipoMovimento = "C", Valor = 0 }, new CancellationToken() { });
+            var result = await _createMovementHandler.Handle(new() { AccountNumber = IdContaCorrentTest, IdRequest = idRequestTest, TypeMovement = "C", Value = 0 }, new CancellationToken() { });
 
             var expectResult = new CreateMovementResponse() { Description = ErrorType.INVALID_ACCOUNT.ToString(), IdMovimento = null, Result = 400 };
 
@@ -104,7 +104,7 @@ namespace Questao5Test
                 Numero = 121
             });
 
-            var result = await _createMovementHandler.Handle(new() { NumeroConta = "001", IdRequisicao = idRequestTest, TipoMovimento = "C", Valor = 0 }, new CancellationToken() { });
+            var result = await _createMovementHandler.Handle(new() { AccountNumber = "001", IdRequest = idRequestTest, TypeMovement = "C", Value = 0 }, new CancellationToken() { });
             var expectResult = new CreateMovementResponse() { Description = ErrorType.INACTIVE_ACCOUNT.ToString(), IdMovimento = null, Result = 400 };
             Assert.Equal(expectResult.Description, result.Description);
 
